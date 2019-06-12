@@ -10,23 +10,19 @@
   <script src="https://clientcdn.pushengage.com/core/3312127a11a0d1a3f4f4cc58af305a66.js"></script>
   <script>
     
-    updateSubscriptionStatus = () => {
+    function updateSubscriptionStatus() {
       _pe.subscriberStatus(res => {
         document.getElementById('subsription-status').innerHTML = res.message;
       }) 
     }
     
-    subscribe = () => {
-      _pe.subscribe();  
-      updateSubscriptionStatus();
+    function subscribe() {
+      _pe.subscribe(res => updateSubscriptionStatus());
     }
     
-    unsubscribe = () => {
-      _pe.unsubscribe();  
-      updateSubscriptionStatus();
+    function unsubscribe() {
+      _pe.unsubscribe(res => updateSubscriptionStatus());
     }
-    
-    updateSubscriptionStatus();
     
   </script>
   
@@ -42,5 +38,8 @@
  
   <button onclick="unsubscribe()">Unsubscribe</button>
   
+  <script>
+    updateSubscriptionStatus();
+  </script>
 </body>
 </html>
