@@ -8,11 +8,37 @@
   <meta name="description" content="ivantcc.github.io">
 
   <script src="https://clientcdn.pushengage.com/core/3312127a11a0d1a3f4f4cc58af305a66.js"></script>
-  <script> _pe.subscribe(); </script>
+  <script>
+    
+    updateSubscriptionStatus = () => {
+      _pe.subscriberStatus(res => {
+        document.getElementById('subsription-status').innerHTML = res.message;
+      }) 
+    }
+    
+    subscribe = () => {
+      _pe.subscribe();  
+      updateSubscriptionStatus();
+    }
+    
+    unsubscribe = () => {
+      _pe.unsubscribe();  
+      updateSubscriptionStatus();
+    }
+    
+  </script>
   
 </head>
 
 <body>
-ivantcc.github.io
+  
+  <h1>ivantcc.github.io</h1>
+  
+  <p>Subscription status: <span id="subsription-status"></span></p>
+  
+  <button onclick="subscribe()">Subscribe</button>
+ 
+  <button onclick="unsubscribe()">Unsubscribe</button>
+  
 </body>
 </html>
