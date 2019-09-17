@@ -6,24 +6,15 @@
 
   <title>ivantcc.github.io</title>
   <meta name="description" content="ivantcc.github.io">
-
-  <script src="https://clientcdn.pushengage.com/core/3312127a11a0d1a3f4f4cc58af305a66.js"></script>
+  
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
   <script>
-    
-    function updateSubscriptionStatus() {
-      _pe.subscriberStatus(res => {
-        document.getElementById('subsription-status').innerHTML = res.message;
-      }) 
-    }
-    
-    function subscribe() {
-      _pe.subscribe(res => updateSubscriptionStatus());
-    }
-    
-    function unsubscribe() {
-      _pe.unsubscribe(res => updateSubscriptionStatus());
-    }
-    
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "fa07867e-c081-4ab6-b284-c22298e8ad8b",
+      });
+    });
   </script>
   
 </head>
@@ -33,13 +24,5 @@
   <h1>ivantcc.github.io</h1>
   
   <p>Subscription status: <span id="subsription-status"></span></p>
-  
-  <button onclick="subscribe()">Subscribe</button>
- 
-  <button onclick="unsubscribe()">Unsubscribe</button>
-  
-  <script>
-    updateSubscriptionStatus();
-  </script>
 </body>
 </html>
