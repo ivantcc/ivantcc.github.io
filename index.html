@@ -1,109 +1,67 @@
-<!doctype html>
+<html>
+    <body>
 
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+        <div id="app">
 
-  <title>ivantcc.github.io</title>
-  <meta name="description" content="ivantcc.github.io">
-  
-  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-  <script>
-    var OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
-      OneSignal.init({
-        appId: "fa07867e-c081-4ab6-b284-c22298e8ad8b",
-      });
-    });
-  </script>
-  
-</head>
+            <img src="https://tauranga.syd1.qualtrics.com/jfe/file/F_1rP1H8LZFoFZa91" alt="">
 
-<body>
-  
-  <h1>ivantcc.github.io</h1>
-  
-  <p>Subscription status: <span id="subsription-status"></span></p>
-  
-  
-  <a href="#" id="my-notification-button" style="display: none;">Subscribe to Notifications</a>
-    <script>
-    function onManageWebPushSubscriptionButtonClicked(event) {
-        getSubscriptionState().then(function(state) {
-            if (state.isPushEnabled) {
-                /* Subscribed, opt them out */
-                OneSignal.setSubscription(false);
-            } else {
-                if (state.isOptedOut) {
-                    /* Opted out, opt them back in */
-                    OneSignal.setSubscription(true);
-                } else {
-                    /* Unsubscribed, subscribe them */
-                    OneSignal.registerForPushNotifications();
+            <input type="file">
+
+            <button v-on:click="createPdf">Submit</button>
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.min.js'></script>
+
+
+        <script>
+            
+            var data = { inoutCsv: [] }
+            var vm = new Vue({
+                el: '#app',
+                data: data,
+                methods: {
+                    'createPdf': () => {
+                        console.log('here');
+                        var docDefinition = { content: [
+                            'This is an sample PDF printed with pdfMake',
+                            {
+                                // you'll most often use dataURI images on the browser side
+                                // if no width/height/fit is provided, the original size will be used
+                                image: 'https://tauranga.syd1.qualtrics.com/jfe/file/F_xD9V4bwHaasRf9L'
+                            }
+                        ] };
+
+
+
+                        pdfMake.createPdf(docDefinition).open({}, window);
+                    }
                 }
-            }
-        });
-        event.preventDefault();
-    }
+            });
 
-    function updateMangeWebPushSubscriptionButton(buttonSelector) {
-        var hideWhenSubscribed = false;
-        var subscribeText = "Subscribe to Notifications";
-        var unsubscribeText = "Unsubscribe from Notifications";
-
-        getSubscriptionState().then(function(state) {
-            var buttonText = !state.isPushEnabled || state.isOptedOut ? subscribeText : unsubscribeText;
-
-            var element = document.querySelector(buttonSelector);
-            if (element === null) {
-                return;
+            function toDataURL(url, callback) {
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function() {
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                    callback(reader.result);
+                    }
+                    reader.readAsDataURL(xhr.response);
+                };
+                xhr.open('GET', url);
+                xhr.responseType = 'blob';
+                xhr.send();
             }
 
-            element.removeEventListener('click', onManageWebPushSubscriptionButtonClicked);
-            element.addEventListener('click', onManageWebPushSubscriptionButtonClicked);
-            element.textContent = buttonText;
+            toDataURL('https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0', function(dataUrl) {
+                console.log('RESULT:', dataUrl)
+            })
 
-            if (state.hideWhenSubscribed && state.isPushEnabled) {
-                element.style.display = "none";
-            } else {
-                element.style.display = "";
-            }
-        });
-    }
-
-    function getSubscriptionState() {
-        return Promise.all([
-          OneSignal.isPushNotificationsEnabled(),
-          OneSignal.isOptedOut()
-        ]).then(function(result) {
-            var isPushEnabled = result[0];
-            var isOptedOut = result[1];
-
-            return {
-                isPushEnabled: isPushEnabled,
-                isOptedOut: isOptedOut
-            };
-        });
-    }
-
-    var OneSignal = OneSignal || [];
-    var buttonSelector = "#my-notification-button";
-
-    /* This example assumes you've already initialized OneSignal */
-    OneSignal.push(function() {
-        // If we're on an unsupported browser, do nothing
-        if (!OneSignal.isPushNotificationsSupported()) {
-            return;
-        }
-        updateMangeWebPushSubscriptionButton(buttonSelector);
-        OneSignal.on("subscriptionChange", function(isSubscribed) {
-            /* If the user's subscription state changes during the page's session, update the button text */
-            updateMangeWebPushSubscriptionButton(buttonSelector);
-        });
-    });
-    </script>
-  
-  
-  
-</body>
+            toDataURL('https://tauranga.syd1.qualtrics.com/jfe/file/F_xD9V4bwHaasRf9L', function(dataUrl) {
+                console.log('RESULT:', dataUrl)
+            })
+        </script>
+    </body>
 </html>
